@@ -11,7 +11,8 @@ import SnapKit
 class BirthDayVCView: UIView {
     
     var collection: UICollectionView!
-    let addButton = UIButton(title: "Add", bgColor: .blue, textColor: .white, font: ODFonts.avenirRoman, cornerRadius: 12)
+    let addButton = UIButton()
+    let birthdayReminderTitle = UILabel(text: "BirthdayReminder", font: ODFonts.titleLabelFont)
     
     init() {
         super.init(frame: CGRect())
@@ -24,21 +25,36 @@ class BirthDayVCView: UIView {
         collection = UICollectionView(frame: CGRect(), collectionViewLayout: createCompositionalLayout())
         collection.register(BirthdayCell.self, forCellWithReuseIdentifier: BirthdayCell.birthDayReusId)
         collection.backgroundColor = .white
+        backgroundColor = .lightGray
+        collection.backgroundColor = .lightGray
+        let config = UIImage.SymbolConfiguration(
+            pointSize: 32, weight: .medium, scale: .default)
+        addButton.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
+        addButton.tintColor = .darkGray
+        birthdayReminderTitle.textColor = .darkGray
+        
     }
     
     func setupConstraints() {
         Helper.tamicOff(views: [collection])
         addSubview(collection)
         addSubview(addButton)
+        addSubview(birthdayReminderTitle)
         NSLayoutConstraint.activate([collection.leadingAnchor.constraint(equalTo: leadingAnchor),
                                      collection.centerXAnchor.constraint(equalTo: centerXAnchor),
                                      collection.bottomAnchor.constraint(equalTo: bottomAnchor),
-                                     collection.topAnchor.constraint(equalTo: topAnchor, constant: 75)])
+                                     collection.topAnchor.constraint(equalTo: topAnchor, constant: 90)])
         
         addButton.snp.makeConstraints { make in
-            make.top.equalTo(36)
-            make.right.equalTo(-36)
+            make.top.equalTo(48)
+            make.right.equalTo(-18)
             make.width.equalTo(75)
+            make.bottom.equalTo(collection.snp.top).inset(-2)
+        }
+        
+        birthdayReminderTitle.snp.makeConstraints { make in
+            make.top.equalTo(56)
+            make.centerX.equalTo(self)
         }
                                    
     
@@ -76,15 +92,15 @@ class BirthDayVCView: UIView {
     
     private func createSections() -> NSCollectionLayoutSection {
         //Item
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.45),
-                                              heightDimension: .fractionalHeight(0.97))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.28),
+                                              heightDimension: .fractionalHeight(0.9))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         //Group
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .fractionalWidth(0.6))
+                                               heightDimension: .fractionalWidth(0.5))
         
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 3)
         
         //Section
         let spacing = CGFloat(8)
@@ -93,7 +109,7 @@ class BirthDayVCView: UIView {
         
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 2
-        section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 24, bottom: 0, trailing: -12)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 36, bottom: 0, trailing: -12)
         
         return section
         

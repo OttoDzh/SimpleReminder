@@ -17,7 +17,7 @@ class MainVCView: UIView {
     let whenLabel = UILabel(text: "When?", font: ODFonts.boldTextFont)
     let whenTF = UITextField(placeholder: "Here could be date, not tf")
     var datePicker = UIDatePicker()
-    let addNewRemindButton = UIButton(title: "Save reminder", bgColor: .darkGray, textColor: .white, font: ODFonts.boldTextFont, cornerRadius: 12)
+    let addNewRemindButton = UIButton(title: "Save reminder", bgColor: .gray, textColor: .white, font: ODFonts.boldTextFont, cornerRadius: 12)
     let table = UITableView()
     init() {
         super.init(frame: CGRect())
@@ -26,7 +26,7 @@ class MainVCView: UIView {
     }
 
     func setupViews() {
-        remindTF.addBottomBorder(height: 1.0, color: .lightGray)
+        remindTF.addBottomBorder(height: 1.0, color: .white)
         remindTF.backgroundColor = .clear
         backgroundColor = .black
         titleLabel.textColor = .white
@@ -34,15 +34,25 @@ class MainVCView: UIView {
         whenLabel.textColor = .white
         remindTF.textColor = .white
         remindTF.layer.cornerRadius = 6
-        datePicker.setValue(UIColor.white, forKey: "textColor")
+        datePicker.setValue(UIColor.black, forKey: "textColor")
         datePicker.datePickerMode = .dateAndTime
         datePicker.minimumDate = Date()
         datePicker.preferredDatePickerStyle = .wheels
-        table.backgroundView = UIImageView(image: UIImage(named: "bwGrad"))
-        table.backgroundColor = .clear
+       // table.backgroundView = UIImageView(image: UIImage(named: "bwGrad"))
+        table.backgroundColor = .black
         table.layer.cornerRadius = 15
         table.separatorStyle = .singleLine
         table.register(MyCell.self, forCellReuseIdentifier: MyCell.reuseId)
+        
+        addNewRemindButton.backgroundColor = .lightGray
+        addNewRemindButton.layer.cornerRadius = 15
+        addNewRemindButton.tintColor = .white
+
+        addNewRemindButton.layer.borderWidth = 2
+        addNewRemindButton.layer.borderColor = UIColor.white.cgColor
+
+        addNewRemindButton.layer.masksToBounds = false
+        
     }
     func setupConstraints() {
         let remindStack = UIStackView(arrangedSubviews: [remindLabel,remindTF], axis: .horizontal, spacing: 24)
@@ -92,7 +102,7 @@ class MainVCView: UIView {
     }
 }
 extension UITextField {
-    internal func addBottomBorder(height: CGFloat = 1.0, color: UIColor = .black) {
+    internal func addBottomBorder(height: CGFloat = 1.0, color: UIColor = .darkGray) {
         let borderView = UIView()
         borderView.backgroundColor = color
         borderView.translatesAutoresizingMaskIntoConstraints = false

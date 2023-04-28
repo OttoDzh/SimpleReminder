@@ -29,7 +29,6 @@ class MainVC: UIViewController,UITextFieldDelegate {
             }
         }
         addTargets()
-      //  remindsArray = decodeDataFromUserDefaults()
         FetchData.decode { remindArray in
             self.remindsArray = remindArray
         }
@@ -51,27 +50,12 @@ class MainVC: UIViewController,UITextFieldDelegate {
         }
         return remindsArray
     }
-    
-//    func encodeData() {
-//        FetchData.encodeData(array: self.remindsArray)
-//    }
-    
-//    func encodeData() {
-//        do {
-//            let encoder = JSONEncoder()
-//            let data = try encoder.encode(self.remindsArray)
-//            self.userDefaults.set(data, forKey: "reminds")
-//        } catch {
-//            print("Unable to Encode Note (\(error))")
-//        }
-//    }
-    
+
     @objc func notif() {
         notificationCenter.getNotificationSettings { settings in
             DispatchQueue.main.async {
                 let title = self.mainView.remindTF.text!
                 let date = self.mainView.datePicker.date
-//                guard self.mainView.remindTF.text!.count <= 25 else {return}
                 if settings.authorizationStatus == .authorized {
                     let content = UNMutableNotificationContent()
                     content.title = title
@@ -96,7 +80,6 @@ class MainVC: UIViewController,UITextFieldDelegate {
                         let newRemind = Remind(remind: self.mainView.remindTF.text!, remindDate: self.formattedDate(date: date))
                         self.remindsArray.append(newRemind)
                         FetchData.encodeData(array: self.remindsArray)
-                       // self.encodeData()
                         self.mainView.remindTF.text = ""
                         DispatchQueue.main.async {
                             self.mainView.table.reloadData()
@@ -126,7 +109,6 @@ class MainVC: UIViewController,UITextFieldDelegate {
         formatter.dateFormat = "d MMM y HH:mm"
         return formatter.string(from: date)
     }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
@@ -204,9 +186,7 @@ extension MainVC: UITableViewDelegate,UITableViewDataSource {
             self.notificationCenter.removePendingNotificationRequests(withIdentifiers: [self.remindsArray[indexPath.row].remind])
             self.remindsArray.remove(at: indexPath.row)
             FetchData.encodeData(array: self.remindsArray)
-           // self.encodeData()
             DispatchQueue.main.async {
-                //self.remindsArray = self.decodeDataFromUserDefaults()
                 FetchData.decode { remindArray in
                     self.remindsArray = remindArray
                 }
@@ -249,7 +229,6 @@ extension MainVC: Reremind {
         notificationCenter.getNotificationSettings { settings in
             DispatchQueue.main.async {
                 let title = remind
-                //              guard self.mainView.remindTF.text!.count <= 25 else {return}
                 if settings.authorizationStatus == .authorized {
                     let content = UNMutableNotificationContent()
                     content.title = title
@@ -267,7 +246,6 @@ extension MainVC: Reremind {
                 self.remindsArray.remove(at: index)
                 let newRemind = Remind(remind: remind, remindDate: remindDate)
                 self.remindsArray.append(newRemind)
-                //self.encodeData()
                 FetchData.encodeData(array: self.remindsArray)
                 DispatchQueue.main.async {
                     
@@ -280,14 +258,12 @@ extension MainVC: Reremind {
 extension MainVC: Deleteremind {
     func deleteRemind(index: Int) {
         self.remindsArray.remove(at: index)
-       // self.encodeData()
         FetchData.encodeData(array: self.remindsArray)
         DispatchQueue.main.async {
             self.mainView.table.reloadData()
         }
     }
 }
-
 extension String {
     func toDate(format:String? = "dd-MM-yyyy HH:mm") -> Date? {
         let formatter = DateFormatter()

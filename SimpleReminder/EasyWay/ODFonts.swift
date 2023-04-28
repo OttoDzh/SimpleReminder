@@ -16,5 +16,5 @@ class ODFonts {
     static let avenirFont = UIFont(name: "AvenirNext-BOLD", size: 16)
     static let avenirLight = UIFont(name: "Avenir-Light", size: 16)
     static let avenirRoman = UIFont(name: "Avenir-Roman", size: 16)
-    
+    static let avenirLight12 = UIFont(name: "Avenir-Light", size: 12)
 }

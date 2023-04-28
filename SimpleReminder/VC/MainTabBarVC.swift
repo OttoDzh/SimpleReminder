@@ -30,7 +30,6 @@ class MainTabBarVC: UITabBarController {
     
     private func setupViews() {
         tabBar.backgroundColor = .darkGray
-        tabBar.layer.cornerRadius = 15
         tabBar.tintColor = .systemBlue
         tabBar.unselectedItemTintColor = .lightGray
     }
