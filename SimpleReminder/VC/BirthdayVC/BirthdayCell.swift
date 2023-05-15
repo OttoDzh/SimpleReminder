@@ -30,11 +30,13 @@ class BirthdayCell: UICollectionViewCell {
         personImageView.contentMode = .scaleAspectFill
         personImageView.layer.cornerRadius =  50
         personImageView.clipsToBounds = true
-        personNameLabel.textColor = .black
+        personNameLabel.textColor = .lightGray
         personNameLabel.numberOfLines = 3
         personNameLabel.textAlignment = .center
-        personBirthdate.textColor = .black
-        bgView.backgroundColor = .lightGray
+        personBirthdate.textColor = .lightGray
+        personImageView.layer.borderWidth = 1
+        personImageView.layer.borderColor = UIColor.lightGray.cgColor
+        bgView.backgroundColor = .black
         bgView.layer.cornerRadius = 30
     }
     func setupConstraints() {
@@ -44,7 +46,6 @@ class BirthdayCell: UICollectionViewCell {
         addSubview(personNameLabel)
         addSubview(personBirthdate)
        
-        
         bgView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }

@@ -8,14 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		BCD7D17C8936152C7A96D3C2 /* Pods_SimpleReminder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3655E1AEE5741E36397668C9 /* Pods_SimpleReminder.framework */; };
+		FB0FDEC22A01902F00703A53 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0FDEC12A01902F00703A53 /* AuthService.swift */; };
+		FB33AEFC2A042297009B7BD9 /* NetworkMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB33AEFB2A042297009B7BD9 /* NetworkMonitorService.swift */; };
 		FB48767E29D97FA10092E06E /* RemindDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB48767D29D97FA10092E06E /* RemindDetailVC.swift */; };
 		FB48768029D97FC40092E06E /* RemindDetailVCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB48767F29D97FC40092E06E /* RemindDetailVCView.swift */; };
 		FB48A25A29EB13E5002C9C0F /* BirthDayDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB48A25929EB13E5002C9C0F /* BirthDayDetailVC.swift */; };
 		FB48A25C29EB1418002C9C0F /* BirthdayDetailVCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB48A25B29EB1418002C9C0F /* BirthdayDetailVCView.swift */; };
 		FB63E6DA29EC56D800795AD4 /* ReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB63E6D929EC56D800795AD4 /* ReminderService.swift */; };
 		FB7A170429E5E24A009C10B7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB7A170329E5E24A009C10B7 /* GoogleService-Info.plist */; };
-		FB7A170729E5E3B4009C10B7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FB7A170629E5E3B4009C10B7 /* FirebaseFirestore */; };
-		FB7A170929E5E3B4009C10B7 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = FB7A170829E5E3B4009C10B7 /* FirebaseStorage */; };
 		FB7A170B29E5E622009C10B7 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7A170A29E5E622009C10B7 /* FirestoreService.swift */; };
 		FB7A170D29E5ECB5009C10B7 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7A170C29E5ECB5009C10B7 /* Person.swift */; };
 		FBA271C229E898CA009A0370 /* CreatePersonVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA271C129E898CA009A0370 /* CreatePersonVC.swift */; };
@@ -24,6 +24,10 @@
 		FBA5277D29E32C5D00F050CE /* BirthDayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA5277C29E32C5D00F050CE /* BirthDayVC.swift */; };
 		FBA5277F29E32C6E00F050CE /* BirthDayVCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA5277E29E32C6E00F050CE /* BirthDayVCView.swift */; };
 		FBA5278129E32E9D00F050CE /* BirthdayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA5278029E32E9D00F050CE /* BirthdayCell.swift */; };
+		FBB8146229FFFF340097EA30 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FBB8146129FFFF340097EA30 /* FirebaseAuth */; };
+		FBB8146429FFFF340097EA30 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = FBB8146329FFFF340097EA30 /* FirebaseDatabase */; };
+		FBB8146629FFFF340097EA30 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FBB8146529FFFF340097EA30 /* FirebaseFirestore */; };
+		FBB8146829FFFF340097EA30 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = FBB8146729FFFF340097EA30 /* FirebaseStorage */; };
 		FBD48AF529CEF3AB00F03900 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD48AF429CEF3AB00F03900 /* AppDelegate.swift */; };
 		FBD48AF729CEF3AB00F03900 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD48AF629CEF3AB00F03900 /* SceneDelegate.swift */; };
 		FBD48AFF29CEF3AB00F03900 /* SimpleReminder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FBD48AFD29CEF3AB00F03900 /* SimpleReminder.xcdatamodeld */; };
@@ -48,6 +52,8 @@
 		3655E1AEE5741E36397668C9 /* Pods_SimpleReminder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleReminder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3F7B722A4287F594BB55665 /* Pods-SimpleReminder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleReminder.debug.xcconfig"; path = "Target Support Files/Pods-SimpleReminder/Pods-SimpleReminder.debug.xcconfig"; sourceTree = "<group>"; };
 		D05A3BCF08CD0F9B0FC30A4F /* Pods-SimpleReminder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleReminder.release.xcconfig"; path = "Target Support Files/Pods-SimpleReminder/Pods-SimpleReminder.release.xcconfig"; sourceTree = "<group>"; };
+		FB0FDEC12A01902F00703A53 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		FB33AEFB2A042297009B7BD9 /* NetworkMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorService.swift; sourceTree = "<group>"; };
 		FB48767D29D97FA10092E06E /* RemindDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindDetailVC.swift; sourceTree = "<group>"; };
 		FB48767F29D97FC40092E06E /* RemindDetailVCView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindDetailVCView.swift; sourceTree = "<group>"; };
 		FB48A25929EB13E5002C9C0F /* BirthDayDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthDayDetailVC.swift; sourceTree = "<group>"; };
@@ -89,9 +95,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBB8146429FFFF340097EA30 /* FirebaseDatabase in Frameworks */,
+				FBB8146629FFFF340097EA30 /* FirebaseFirestore in Frameworks */,
 				BCD7D17C8936152C7A96D3C2 /* Pods_SimpleReminder.framework in Frameworks */,
-				FB7A170729E5E3B4009C10B7 /* FirebaseFirestore in Frameworks */,
-				FB7A170929E5E3B4009C10B7 /* FirebaseStorage in Frameworks */,
+				FBB8146829FFFF340097EA30 /* FirebaseStorage in Frameworks */,
+				FBB8146229FFFF340097EA30 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,7 +256,9 @@
 			children = (
 				FBF1E78229E474FF009B78AC /* FetchDatService.swift */,
 				FB7A170A29E5E622009C10B7 /* FirestoreService.swift */,
+				FB0FDEC12A01902F00703A53 /* AuthService.swift */,
 				FB63E6D929EC56D800795AD4 /* ReminderService.swift */,
+				FB33AEFB2A042297009B7BD9 /* NetworkMonitorService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -272,8 +282,10 @@
 			);
 			name = SimpleReminder;
 			packageProductDependencies = (
-				FB7A170629E5E3B4009C10B7 /* FirebaseFirestore */,
-				FB7A170829E5E3B4009C10B7 /* FirebaseStorage */,
+				FBB8146129FFFF340097EA30 /* FirebaseAuth */,
+				FBB8146329FFFF340097EA30 /* FirebaseDatabase */,
+				FBB8146529FFFF340097EA30 /* FirebaseFirestore */,
+				FBB8146729FFFF340097EA30 /* FirebaseStorage */,
 			);
 			productName = SimpleReminder;
 			productReference = FBD48AF129CEF3AB00F03900 /* SimpleReminder.app */;
@@ -304,7 +316,7 @@
 			);
 			mainGroup = FBD48AE829CEF3AB00F03900;
 			packageReferences = (
-				FB7A170529E5E3B4009C10B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				FBB8146029FFFF340097EA30 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = FBD48AF229CEF3AB00F03900 /* Products */;
 			projectDirPath = "";
@@ -391,6 +403,7 @@
 				FBD48AF729CEF3AB00F03900 /* SceneDelegate.swift in Sources */,
 				FBD48B1329CEF3CA00F03900 /* TextFieldExtension.swift in Sources */,
 				FB7A170B29E5E622009C10B7 /* FirestoreService.swift in Sources */,
+				FB33AEFC2A042297009B7BD9 /* NetworkMonitorService.swift in Sources */,
 				FBD48B1929CEF3CA00F03900 /* LabelExtension.swift in Sources */,
 				FB48767E29D97FA10092E06E /* RemindDetailVC.swift in Sources */,
 				FB48768029D97FC40092E06E /* RemindDetailVCView.swift in Sources */,
@@ -402,6 +415,7 @@
 				FBD48B2329CF520100F03900 /* MyCell.swift in Sources */,
 				FBD48B1629CEF3CA00F03900 /* ODColors.swift in Sources */,
 				FBA271C229E898CA009A0370 /* CreatePersonVC.swift in Sources */,
+				FB0FDEC22A01902F00703A53 /* AuthService.swift in Sources */,
 				FBD48AFF29CEF3AB00F03900 /* SimpleReminder.xcdatamodeld in Sources */,
 				FB48A25A29EB13E5002C9C0F /* BirthDayDetailVC.swift in Sources */,
 			);
@@ -548,8 +562,8 @@
 				INFOPLIST_FILE = SimpleReminder/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -576,8 +590,8 @@
 				INFOPLIST_FILE = SimpleReminder/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -615,25 +629,35 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FB7A170529E5E3B4009C10B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		FBB8146029FFFF340097EA30 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
-				kind = exactVersion;
-				version = 10.8.0;
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FB7A170629E5E3B4009C10B7 /* FirebaseFirestore */ = {
+		FBB8146129FFFF340097EA30 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FB7A170529E5E3B4009C10B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = FBB8146029FFFF340097EA30 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		FBB8146329FFFF340097EA30 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FBB8146029FFFF340097EA30 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		FBB8146529FFFF340097EA30 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FBB8146029FFFF340097EA30 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
 		};
-		FB7A170829E5E3B4009C10B7 /* FirebaseStorage */ = {
+		FBB8146729FFFF340097EA30 /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FB7A170529E5E3B4009C10B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = FBB8146029FFFF340097EA30 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */

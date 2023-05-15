@@ -15,12 +15,10 @@ class BirthdayDetailVCView: UIView {
     let birthDay = UILabel(text: "BirthdayDate", font: ODFonts.titleLabelFont)
     let smsButton = UIButton()
     let callButton = UIButton()
-//    let deleteButton = UIButton(title: "Delete", bgColor: .clear, textColor: .blue, font: ODFonts.titleLabelFont, cornerRadius: 15)
     let deleteButton = UIButton()
-//    let editButton = UIButton(title: "Edit", bgColor: .clear, textColor: .blue, font: ODFonts.titleLabelFont, cornerRadius: 15)
     let editButton = UIButton()
-//    let dismissButton = UIButton(title: "Back", bgColor: .clear, textColor: .blue, font: ODFonts.titleLabelFont, cornerRadius: 15)
     let dismissButton = UIButton()
+    
     init() {
         super.init(frame: CGRect())
         setupViews()
@@ -28,12 +26,12 @@ class BirthdayDetailVCView: UIView {
     }
     
     func setupViews() {
-        backgroundColor = .gray
+        backgroundColor = .black
         personImage.contentMode = .scaleAspectFill
         personImage.clipsToBounds = true
         personImage.layer.cornerRadius = 185
         personImage.layer.borderWidth = 2
-        personImage.layer.borderColor = UIColor.white.cgColor
+        personImage.layer.borderColor = UIColor.lightGray.cgColor
         
         let arrayButonns = [dismissButton,editButton,deleteButton,smsButton,callButton]
         editButton.setImage(UIImage(systemName: "rectangle.and.pencil.and.ellipsis"), for: .normal)

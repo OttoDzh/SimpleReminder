@@ -16,7 +16,8 @@ class MainVC: UIViewController,UITextFieldDelegate {
     var remindsArray = [Remind]()
     let mainView = MainVCView()
     let notificationCenter = UNUserNotificationCenter.current()
-   
+    let pickerArray = ["None","Hourly","Daily","Weekly","Monthly","Yearly"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = mainView
@@ -30,7 +31,7 @@ class MainVC: UIViewController,UITextFieldDelegate {
         }
         addTargets()
         FetchData.decode { remindArray in
-            self.remindsArray = remindArray
+            self.remindsArray = remindArray.sorted(by: {$0.remindDate.toDate()! < $1.remindDate.toDate()!})
         }
     }
     
@@ -38,7 +39,7 @@ class MainVC: UIViewController,UITextFieldDelegate {
         mainView.addNewRemindButton.addTarget(self, action: #selector(notif), for: .touchUpInside)
     }
     
-     func decodeDataFromUserDefaults() -> [Remind] {
+    func decodeDataFromUserDefaults() -> [Remind] {
         if let data = UserDefaults.standard.data(forKey: "reminds") {
             do {
                 let decoder = JSONDecoder()
@@ -50,25 +51,14 @@ class MainVC: UIViewController,UITextFieldDelegate {
         }
         return remindsArray
     }
-
+    
     @objc func notif() {
         notificationCenter.getNotificationSettings { settings in
             DispatchQueue.main.async {
                 let title = self.mainView.remindTF.text!
                 let date = self.mainView.datePicker.date
                 if settings.authorizationStatus == .authorized {
-                    let content = UNMutableNotificationContent()
-                    content.title = title
-                    content.sound = UNNotificationSound.defaultRingtone
-                    let dateComp = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute], from: date)
-                    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComp, repeats: false)
-                    let request = UNNotificationRequest(identifier: title, content: content, trigger: trigger)
-                    self.notificationCenter.add(request) { error in
-                        if error != nil {
-                            print("Error" + error.debugDescription)
-                            return
-                        }
-                    }
+                    ReminderService.setSimpleRemind(name: title, date: date)
                     if self.mainView.remindTF.text!.count >= 25 || self.mainView.remindTF.text!.count == 0  {
                         let alert = UIAlertController(title: "Ooops", message: "Fill in the field the maximum allowed number of letters is 25", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "Ok", style: .default))
@@ -82,6 +72,7 @@ class MainVC: UIViewController,UITextFieldDelegate {
                         FetchData.encodeData(array: self.remindsArray)
                         self.mainView.remindTF.text = ""
                         DispatchQueue.main.async {
+                            self.remindsArray.sort(by: {$0.remindDate.toDate()! < $1.remindDate.toDate()!})
                             self.mainView.table.reloadData()
                         }
                     }
@@ -109,28 +100,30 @@ class MainVC: UIViewController,UITextFieldDelegate {
         formatter.dateFormat = "d MMM y HH:mm"
         return formatter.string(from: date)
     }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
     }
     
     func strikeText(strike : String) -> NSMutableAttributedString {
-    let attributeString = NSMutableAttributedString(string: strike)
-    attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle,
-    value: NSUnderlineStyle.single.rawValue,
-    range: NSMakeRange(0, attributeString.length))
-    return attributeString
+        let attributeString = NSMutableAttributedString(string: strike)
+        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle,
+                                     value: NSUnderlineStyle.single.rawValue,
+                                     range: NSMakeRange(0, attributeString.length))
+        return attributeString
     }
     
     func strikeTexxt(strike : String) -> NSMutableAttributedString {
-    let attributeString = NSMutableAttributedString(string: strike)
-    attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle,
-                                 value: NSUnderlineStyle.patternDash.rawValue,
-    range: NSMakeRange(0, attributeString.length))
-    return attributeString
+        let attributeString = NSMutableAttributedString(string: strike)
+        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle,
+                                     value: NSUnderlineStyle.patternDash.rawValue,
+                                     range: NSMakeRange(0, attributeString.length))
+        return attributeString
     }
-
+    
 }
+
 extension MainVC: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPathRow = indexPath.row
@@ -156,27 +149,27 @@ extension MainVC: UITableViewDelegate,UITableViewDataSource {
         let secondDate = self.remindsArray[indexPath.row].remindDate
         let dateNew = secondDate.toDate()
         if dateNew! <= Date() {
-            cell.remindLabel.textColor = .black
-            cell.whenRemindLabel.textColor = .black
+            cell.remindLabel.textColor = .lightGray
+            cell.whenRemindLabel.textColor = .lightGray
             cell.remindLabel.font = ODFonts.avenirLight
             cell.whenRemindLabel.font = ODFonts.avenirLight
-            cell.bgImage.image = UIImage(named: "bgImage")
+            cell.bgImage.image = UIImage(named: "newBgCell")
             cell.remindLabel.attributedText = strikeText(strike: self.remindsArray[indexPath.row].remind)
             cell.whenRemindLabel.attributedText = strikeText(strike: self.remindsArray[indexPath.row].remindDate)
         } else {
-            cell.remindLabel.textColor = .black
-            cell.whenRemindLabel.textColor = .black
-            cell.bgImage.image = UIImage(named: "bgImage")
+            cell.remindLabel.textColor = .lightGray
+            cell.whenRemindLabel.textColor = .lightGray
+            cell.bgImage.image = UIImage(named: "newBgCell")
             cell.remindLabel.font = ODFonts.avenirRoman
             cell.whenRemindLabel.font = ODFonts.avenirRoman
             cell.remindLabel.attributedText = strikeTexxt(strike: self.remindsArray[indexPath.row].remind)
             cell.whenRemindLabel.attributedText = strikeTexxt(strike: self.remindsArray[indexPath.row].remindDate)
-
         }
+        
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        60
+        75
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -184,6 +177,7 @@ extension MainVC: UITableViewDelegate,UITableViewDataSource {
             var array = self.decodeDataFromUserDefaults()
             array.remove(at: indexPath.row)
             self.notificationCenter.removePendingNotificationRequests(withIdentifiers: [self.remindsArray[indexPath.row].remind])
+            self.remindsArray.sort(by: {$0.remindDate.toDate()! < $1.remindDate.toDate()!})
             self.remindsArray.remove(at: indexPath.row)
             FetchData.encodeData(array: self.remindsArray)
             DispatchQueue.main.async {
@@ -201,6 +195,7 @@ extension MainVC: UITableViewDelegate,UITableViewDataSource {
         return config
     }
 }
+
 extension UIImage {
     func addBackgroundCircle(_ color: UIColor?) -> UIImage? {
         let circleDiameter = max(size.width * 1.3, size.height * 1.3)
@@ -225,41 +220,25 @@ extension UIImage {
 }
 
 extension MainVC: Reremind {
-    func updateRemind(remindDate: String, remind:String,date:Date,index:Int) {
-        notificationCenter.getNotificationSettings { settings in
-            DispatchQueue.main.async {
-                let title = remind
-                if settings.authorizationStatus == .authorized {
-                    let content = UNMutableNotificationContent()
-                    content.title = title
-                    content.sound = UNNotificationSound.defaultRingtone
-                    let dateComp = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute], from: date)
-                    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComp, repeats: false)
-                    let request = UNNotificationRequest(identifier: title, content: content, trigger: trigger)
-                    self.notificationCenter.add(request) { error in
-                        if error != nil {
-                            print("Error" + error.debugDescription)
-                            return
-                        }
-                    }
-                }
-                self.remindsArray.remove(at: index)
-                let newRemind = Remind(remind: remind, remindDate: remindDate)
-                self.remindsArray.append(newRemind)
-                FetchData.encodeData(array: self.remindsArray)
-                DispatchQueue.main.async {
-                    
-                    self.mainView.table.reloadData()
-                }
-            }
+    func updateRemind(remindDate:String,remind:String,date:Date,index:Int) {
+        ReminderService.setSimpleRemind(name: remind, date: date)
+        self.remindsArray.remove(at: index)
+        let newRemind = Remind(remind: remind, remindDate: remindDate)
+        self.remindsArray.append(newRemind)
+        FetchData.encodeData(array: self.remindsArray)
+        DispatchQueue.main.async {
+            self.remindsArray.sort(by:  {$0.remindDate.toDate()! < $1.remindDate.toDate()!})
+            self.mainView.table.reloadData()
         }
     }
 }
+
 extension MainVC: Deleteremind {
     func deleteRemind(index: Int) {
         self.remindsArray.remove(at: index)
         FetchData.encodeData(array: self.remindsArray)
         DispatchQueue.main.async {
+            self.remindsArray.sort(by:  {$0.remindDate.toDate()! < $1.remindDate.toDate()!})
             self.mainView.table.reloadData()
         }
     }

@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 extension UITextField {
-    
     convenience init(placeholder:String) {
         self.init()
         self.placeholder = placeholder
@@ -19,6 +18,5 @@ extension UITextField {
         self.leftViewMode = .always
         self.backgroundColor = .white
     }
-    
 }
 

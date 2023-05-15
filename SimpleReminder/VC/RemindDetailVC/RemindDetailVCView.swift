@@ -10,8 +10,8 @@ import SnapKit
 
 class RemindDetailVCView: UIView {
     
-    let bgImage = UIImageView(image: UIImage(named: "bgImage"))
-    let remindView = UIImageView(image: UIImage(named: "bwGrad"))
+    let bgImage = UIImageView(image: UIImage(named: "newBgCell"))
+    let remindView = UIImageView(image: UIImage(named: "newBgCell"))
     let remindLabel = UILabel(text: "Could be remind", font: ODFonts.avenirFont)
     let whenRemindLabel = UILabel(text: "Could be when remind", font: ODFonts.avenirFont)
     let reRemindButton = UIButton(title: "", bgColor: .white, textColor: .black, font: ODFonts.titleLabelFont, cornerRadius: 12)
@@ -40,6 +40,21 @@ class RemindDetailVCView: UIView {
         datePicker.setValue(UIColor.white, forKey: "textColor")
         datePicker.datePickerMode = .dateAndTime
         datePicker.minimumDate = Date()
+        
+        let arrayButons = [reRemindButton,deleteRemindButton,cancelButton]
+        
+        for buttons in arrayButons {
+            buttons.backgroundColor = .lightGray
+            buttons.layer.cornerRadius = 12
+            buttons.tintColor = .white
+            buttons.layer.shadowOpacity = 2
+            buttons.layer.shadowColor = UIColor.darkGray.cgColor
+            buttons.layer.borderWidth = 2
+            buttons.layer.borderColor = UIColor.white.cgColor
+            buttons.layer.shadowOffset = CGSize(width: 3.0, height: 3.0)
+            buttons.layer.shadowRadius = 3.0
+            buttons.layer.masksToBounds = false
+        }
     }
     
     func setupConstraints() {

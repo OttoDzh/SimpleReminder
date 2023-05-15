@@ -9,9 +9,7 @@ import Foundation
 import UIKit
 
 class ODColors {
-    
     static let red : UIColor = .red
     static let systemBlue : UIColor = .systemBlue
     static let green : UIColor = .green
-    
 }

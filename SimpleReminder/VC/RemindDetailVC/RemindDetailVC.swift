@@ -88,8 +88,10 @@ class RemindDetailVC: UIViewController {
             return
         }
             var array = MainVC.shared.decodeDataFromUserDefaults()
+            array.sort(by:{$0.remindDate.toDate()! < $1.remindDate.toDate()!})
             array.remove(at: index)
            getNewDate()
+           self.notificationCenter.removePendingNotificationRequests(withIdentifiers: [remind.remind])
             self.delegate?.updateRemind(remindDate: remindDetailView.whenRemindLabel.text!,remind: remindDetailView.remindLabel.text!,date: remindDetailView.datePicker.date,index: index)
             self.dismiss(animated: true)
         }

@@ -13,7 +13,5 @@ class Helper {
         for view in views {
             view.translatesAutoresizingMaskIntoConstraints = false
         }
-    }
-    
-    
+    } 
 }

@@ -14,15 +14,15 @@ class Person {
     let birthday: String
     let personImage: Data
     let phoneNumber: String
-
-    internal init(id: String, name: String, birthday: String, personImage: Data,phoneNumber:String) {
+    let userId: String
+    internal init(id: String, name: String, birthday: String, personImage: Data,phoneNumber:String,userId:String) {
         self.id = id
         self.name = name
         self.birthday = birthday
         self.personImage = personImage
         self.phoneNumber = phoneNumber
+        self.userId = userId
     }
-    
     init?(snap:DocumentSnapshot) {
         guard let data = snap.data() else {return nil}
         guard let id = data["id"] as? String else { return nil }
@@ -30,12 +30,13 @@ class Person {
         guard let birthday = data["birthday"] as? String else { return nil }
         guard let personImage = data["personImage"] as? Data else { return nil }
         guard let phoneNumber = data["phoneNumber"] as? String else { return nil }
-        
-        
+        guard let userId = data["userId"] as? String else { return nil }
+     
         self.id = id
         self.name = name
         self.birthday = birthday
         self.personImage = personImage
         self.phoneNumber = phoneNumber
+        self.userId = userId
     }
 }

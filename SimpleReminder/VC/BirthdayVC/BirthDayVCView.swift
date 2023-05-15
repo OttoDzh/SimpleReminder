@@ -13,6 +13,7 @@ class BirthDayVCView: UIView {
     var collection: UICollectionView!
     let addButton = UIButton()
     let birthdayReminderTitle = UILabel(text: "BirthdayReminder", font: ODFonts.titleLabelFont)
+    var activityIndicator = UIActivityIndicatorView(style: .large)
     
     init() {
         super.init(frame: CGRect())
@@ -25,25 +26,32 @@ class BirthDayVCView: UIView {
         collection = UICollectionView(frame: CGRect(), collectionViewLayout: createCompositionalLayout())
         collection.register(BirthdayCell.self, forCellWithReuseIdentifier: BirthdayCell.birthDayReusId)
         collection.backgroundColor = .white
-        backgroundColor = .lightGray
-        collection.backgroundColor = .lightGray
+        backgroundColor = .black
+        collection.backgroundColor = .black
         let config = UIImage.SymbolConfiguration(
             pointSize: 32, weight: .medium, scale: .default)
         addButton.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
-        addButton.tintColor = .darkGray
-        birthdayReminderTitle.textColor = .darkGray
-        
+        addButton.tintColor = .white
+        birthdayReminderTitle.textColor = .white
+        activityIndicator.color = .gray
     }
     
     func setupConstraints() {
         Helper.tamicOff(views: [collection])
+        
         addSubview(collection)
         addSubview(addButton)
         addSubview(birthdayReminderTitle)
+        addSubview(activityIndicator)
+        
         NSLayoutConstraint.activate([collection.leadingAnchor.constraint(equalTo: leadingAnchor),
                                      collection.centerXAnchor.constraint(equalTo: centerXAnchor),
                                      collection.bottomAnchor.constraint(equalTo: bottomAnchor),
                                      collection.topAnchor.constraint(equalTo: topAnchor, constant: 90)])
+        
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
         
         addButton.snp.makeConstraints { make in
             make.top.equalTo(48)

@@ -30,7 +30,9 @@ class MyCell: UITableViewCell {
         addSubview(whenRemindLabel)
         
         bgImage.snp.makeConstraints { make in
-            make.left.right.top.bottom.equalTo(0)
+            make.left.right.equalTo(0)
+            make.bottom.equalTo(-3)
+            make.top.equalTo(3)
         }
         
         remindLabel.snp.makeConstraints { make in

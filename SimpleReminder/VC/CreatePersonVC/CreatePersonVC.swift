@@ -10,11 +10,12 @@ import UIKit
 protocol AddPersonDelegate {
     func reloadUI()
 }
+
 protocol personAfterEditDelegate {
     func getPersonAfterEditing(person:Person)
 }
 
-class CreatePersonVC: UIViewController {
+class CreatePersonVC: UIViewController, UITextFieldDelegate {
     
     let datePicker = UIDatePicker()
     let createPersonView = CreatePersonVCView()
@@ -22,6 +23,7 @@ class CreatePersonVC: UIViewController {
     var personDelegate: personAfterEditDelegate?
     var person: Person
     let notificationCenter = UNUserNotificationCenter.current()
+    var buttonIsActive = false
     
     init(person:Person) {
         self.person = person
@@ -35,27 +37,66 @@ class CreatePersonVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = createPersonView
-        
+        createPersonView.phoneNumberTF.delegate = self
         datePickerTf()
         addTargets()
         createPersonView.saveButton.isEnabled = false
         setupAddTargetIsNotEmptyTextFields()
         enteringView()
+        
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        animateLabelView()
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        animateLabelView()
+    }
+
+    @objc func willEnterForeground() {
+       animateLabelView()
+    }
+    
+    
+    func animateLabelView() {
+        let operations = UIView.AnimationOptions.repeat
+        let operationsback = UIView.AnimationOptions.autoreverse
+        UIView.transition(with: self.createPersonView.viewForSwipe, duration: 1, options: operations, animations: {
+            self.createPersonView.viewForSwipe.alpha = 1.0
+            self.createPersonView.viewForSwipe.center.y = self.createPersonView.viewForSwipe.frame.maxY
+        }, completion: nil)
+        UIView.transition(with: self.createPersonView.viewForSwipeChevron, duration: 0.5, options: [operations,operationsback], animations: {
+            self.createPersonView.viewForSwipeChevron.center.y = self.createPersonView.viewForSwipeChevron.frame.maxY
+        }, completion: nil)
+        
+        
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let aSet = NSCharacterSet(charactersIn:"+0123456789").inverted
+        let compSepByCharInSet = string.components(separatedBy: aSet)
+        let numberFiltered = compSepByCharInSet.joined(separator: "")
+        return string == numberFiltered
     }
     
     func enteringView() {
         createPersonView.personNameTF.text = person.name
         createPersonView.personBirthday.text = person.birthday
         createPersonView.phoneNumberTF.text = person.phoneNumber
-        if createPersonView.personNameTF.text != "" {
+        if createPersonView.personNameTF.text != ""  {
             createPersonView.personImage.image = UIImage(data: person.personImage)
             createPersonView.saveButton.setTitleColor(.darkGray, for: .normal)
-            createPersonView.saveButton.isEnabled = true
-            
+            createPersonView.addPhotoButton.setTitle("Edit photo", for: .normal)
+            createPersonView.saveButton.isEnabled = false
         } else {
             createPersonView.personImage.image = UIImage(named: "maryImage")
         }
-       
     }
     
     func setupAddTargetIsNotEmptyTextFields() {
@@ -63,129 +104,103 @@ class CreatePersonVC: UIViewController {
         createPersonView.personBirthday.addTarget(self, action: #selector(textFieldsIsNotEmpty), for: .allEditingEvents)
         createPersonView.phoneNumberTF.addTarget(self, action: #selector(textFieldsIsNotEmpty),for: .allEditingEvents)
         datePicker.addTarget(self, action: #selector(datePickerChanged), for: .allEditingEvents)
-       }
+    }
+    
     @objc func datePickerChanged() {
         guard createPersonView.personBirthday.text != ""  else {return}
-        createPersonView.saveButton.setTitleColor(.blue, for: .normal)
+        createPersonView.saveButton.setTitleColor(.gray, for: .normal)
     }
+    
     @objc func textFieldsIsNotEmpty(sender: UITextField) {
         guard
             let name = createPersonView.personNameTF.text, !name.isEmpty,
             let birthday = createPersonView.personBirthday.text, !birthday.isEmpty
-          else
+        else
         {
             self.createPersonView.saveButton.isEnabled = false
-            createPersonView.saveButton.setTitleColor(.lightGray, for: .normal)
-          return
+            createPersonView.saveButton.setTitleColor(.gray, for: .normal)
+            return
         }
         createPersonView.saveButton.isEnabled = true
-        createPersonView.saveButton.setTitleColor(.darkGray, for: .normal)
-       }
+        createPersonView.saveButton.setTitleColor(.white, for: .normal)
+    }
+    
     func addTargets() {
         createPersonView.addPhotoButton.addTarget(self, action: #selector(imagePicker), for: .touchUpInside)
         createPersonView.saveButton.addTarget(self, action: #selector(savePerson), for: .touchUpInside)
     }
-    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
-        let size = image.size
-        
-        let widthRatio  = targetSize.width  / size.width
-        let heightRatio = targetSize.height / size.height
-        
-        // Figure out what our orientation is, and use that to form the rectangle
-        var newSize: CGSize
-        if(widthRatio > heightRatio) {
-            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
-        } else {
-            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
-        }
-        
-        // This is the rect that we've calculated out and this is what is actually used below
-        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
-        
-        // Actually do the resizing to the rect using the ImageContext stuff
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.draw(in: rect)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
-    }
     
     @objc func savePerson() {
-        if person.name != "" {
-            FirestoreService.shared.deletePerson(id: self.person.id) { result  in
-                 switch result {
-
-                 case .success(let id):
-                     print("Person with \(id) deleted")
-                 case .failure(let error):
-                     print(error.localizedDescription)
-                 }
-             }
-     //        self.delegate?.deletePerson(index: self.index)
-        }
-        
-        self.notificationCenter.removePendingNotificationRequests(withIdentifiers: [self.person.name])
-//        let image = createPersonView.personImage.image
-        let image = resizeImage(image: createPersonView.personImage.image!, targetSize: CGSizeMake(500.0, 500.0))
-        let dataImage = image.pngData()
-        let pngImage = UIImageView(image: UIImage(named: "maryImage"))
-        let pngData = pngImage.image?.pngData()
-
-        guard createPersonView.personNameTF.text != "" || createPersonView.personBirthday.text != ""  else {return}
-      
-        FirestoreService.shared.savePerson(id: UUID().uuidString,
-                                           name: createPersonView.personNameTF.text!,
-                                           birthday: createPersonView.personBirthday.text!,
-                                           personImage: dataImage ?? pngData!,
-                                           phoneNumber: createPersonView.phoneNumberTF.text!) { result in
-            switch result {
-            case .success(let person):
-                print(person)
-                
-                let date = self.datePicker.date
-                let calendar = Calendar.current
-                let componentsMonth = calendar.dateComponents([.month], from: date)
-                let month = componentsMonth.month
-                let componentsDay = calendar.dateComponents([.day], from: date)
-                let day = componentsDay.day
-                var hourComp = DateComponents()
-                hourComp.hour = 9
-   //             ReminderService.setRemind(name: self.createPersonView.personNameTF.text!,dateMonth: month!,dateDay: day!,dateHour: hourComp.hour!)
-                
-                self.notificationCenter.getNotificationSettings { settings in
-                    DispatchQueue.main.async {
-                        let title = "Birthday:\(person.name)"
-                            let content = UNMutableNotificationContent()
-                            content.title = title
-                            content.sound = UNNotificationSound.defaultRingtone
-                        var hourComp = DateComponents()
-                        hourComp.hour = 9
-                        let dateCompCheck = DateComponents(month: month, day: day, hour: hourComp.hour)
-                            let trigger = UNCalendarNotificationTrigger(dateMatching: dateCompCheck, repeats: true)
-                            let request = UNNotificationRequest(identifier: title, content: content, trigger: trigger)
-                            self.notificationCenter.add(request) { error in
-                                if error != nil {
-                                    print("Error" + error.debugDescription)
-                                    return
-                            }
-                        }
+        if buttonIsActive == false {
+            if person.name != "" {
+                FirestoreService.shared.deletePerson(id: self.person.id) { result  in
+                    switch result {
+                        
+                    case .success(let id):
+                        print("Person with \(id) deleted")
+                    case .failure(let error):
+                        print(error.localizedDescription)
                     }
                 }
-        
-                self.delegate?.reloadUI()
-                self.personDelegate?.getPersonAfterEditing(person: person)
-                self.dismiss(animated: true)
-            case .failure(let error):
-                print(error)
-                print("oshibka zapisi v bazu dannyx")
-                let alertController = UIAlertController(title: "", message: "Selected image too big size", preferredStyle: .alert)
-                let action = UIAlertAction(title: "Ок", style: .default) {(action) in
+            }
+            
+            self.notificationCenter.removePendingNotificationRequests(withIdentifiers: [self.person.name])
+            let resizedImaged = MonitorNetwork.resizeImage(image: createPersonView.personImage.image!, targetSize: CGSizeMake(500.0, 500.0))
+            let dataImage = resizedImaged.pngData()
+            let pngImage = UIImageView(image: UIImage(named: "maryImage"))
+            let pngData = pngImage.image?.pngData()
+            
+            guard createPersonView.personNameTF.text != "" || createPersonView.personBirthday.text != ""  else {return}
+            
+            
+            AuthService.shared.signUp { result in
+                switch result {
+                case .success(let user):
+                    FirestoreService.shared.savePerson(id: UUID().uuidString,
+                                                       name: self.createPersonView.personNameTF.text!,
+                                                       birthday: self.createPersonView.personBirthday.text!,
+                                                       personImage: dataImage ?? pngData!,
+                                                       phoneNumber: self.createPersonView.phoneNumberTF.text!,
+                                                       userId: user.uid) { result in
+                        switch result {
+                        case .success(let person):
+                            print(person)
+                            
+                            let date = self.datePicker.date
+                            let calendar = Calendar.current
+                            let componentsMonth = calendar.dateComponents([.month], from: date)
+                            let month = componentsMonth.month
+                            let componentsDay = calendar.dateComponents([.day], from: date)
+                            let day = componentsDay.day
+                            var hourComp = DateComponents()
+                            hourComp.hour = 9
+                            DispatchQueue.main.async {
+                                ReminderService.setRemindBirthday(name: self.createPersonView.personNameTF.text!,dateMonth: month!,dateDay: day!,dateHour: hourComp.hour!)
+                            }
+                            self.delegate?.reloadUI()
+                            self.personDelegate?.getPersonAfterEditing(person: person)
+                            self.dismiss(animated: true)
+                        case .failure(let error):
+                            print(error)
+                            print("oshibka zapisi v bazu dannyx")
+                            let alertController = UIAlertController(title: "", message: "Selected image too big size", preferredStyle: .alert)
+                            let action = UIAlertAction(title: "Ок", style: .default) {(action) in
+                            }
+                            alertController.addAction(action)
+                            self.present(alertController, animated: true)
+                        }
+                    }
+                case .failure(let error):
+                    print(error)
                 }
-                alertController.addAction(action)
-                self.present(alertController, animated: true) 
+                
+            }
+            buttonIsActive = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+                self.buttonIsActive = false
             }
         }
+        
     }
     
     func datePickerTf() {
@@ -216,14 +231,21 @@ class CreatePersonVC: UIViewController {
     }
     
     @objc func imagePicker() {
-                let alert = UIAlertController(title: "Select image", message: "", preferredStyle: .actionSheet)
-                let libraryMethod = UIAlertAction(title: "From library", style: .default) { [weak self] (_) in
-                    self?.showImagePicker(method: .photoLibrary)
-                }
-                let cancel = UIAlertAction(title: "Cancel", style: .destructive)
-                alert.addAction(libraryMethod)
-                alert.addAction(cancel)
-                self.present(alert,animated: true)
+        let alert = UIAlertController(title: "Select image", message: "", preferredStyle: .actionSheet)
+        let libraryMethod = UIAlertAction(title: "From library", style: .default) { [weak self] (_) in
+            self?.showImagePicker(method: .photoLibrary)
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        let deletePhotoAction = UIAlertAction(title: "Delete photo", style: .destructive) { _ in
+            self.createPersonView.personImage.image = UIImage(named: "maryImage")
+            self.createPersonView.saveButton.isEnabled = true
+            self.createPersonView.saveButton.setTitleColor(.white, for: .normal)
+        }
+        alert.addAction(libraryMethod)
+        alert.addAction(deletePhotoAction)
+        alert.addAction(cancel)
+        self.present(alert,animated: true)
     }
     
     func showImagePicker(method:UIImagePickerController.SourceType) {
@@ -237,12 +259,14 @@ class CreatePersonVC: UIViewController {
         imagePickerController.allowsEditing = true
         self.present(imagePickerController, animated: true)
     }
-
+    
 }
 
 extension CreatePersonVC: UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         createPersonView.personImage.image = info[.editedImage] as? UIImage
+        createPersonView.saveButton.isEnabled = true
+        createPersonView.saveButton.setTitleColor(.white, for: .normal)
         dismiss(animated: true)
     }
 }

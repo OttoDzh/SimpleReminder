@@ -30,9 +30,7 @@ class FetchData {
             } catch {
                 print("Unable to Decode Note (\(error))")
             }
-          
         }
     }
-    
     
 }

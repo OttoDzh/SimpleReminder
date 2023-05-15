@@ -19,6 +19,7 @@ class MainVCView: UIView {
     var datePicker = UIDatePicker()
     let addNewRemindButton = UIButton(title: "Save reminder", bgColor: .gray, textColor: .white, font: ODFonts.boldTextFont, cornerRadius: 12)
     let table = UITableView()
+
     init() {
         super.init(frame: CGRect())
         setupViews()
@@ -37,23 +38,19 @@ class MainVCView: UIView {
         datePicker.setValue(UIColor.black, forKey: "textColor")
         datePicker.datePickerMode = .dateAndTime
         datePicker.minimumDate = Date()
-        datePicker.preferredDatePickerStyle = .wheels
-       // table.backgroundView = UIImageView(image: UIImage(named: "bwGrad"))
+        datePicker.preferredDatePickerStyle = .compact
         table.backgroundColor = .black
+        table.separatorStyle = .none
         table.layer.cornerRadius = 15
-        table.separatorStyle = .singleLine
         table.register(MyCell.self, forCellReuseIdentifier: MyCell.reuseId)
-        
         addNewRemindButton.backgroundColor = .lightGray
         addNewRemindButton.layer.cornerRadius = 15
         addNewRemindButton.tintColor = .white
-
         addNewRemindButton.layer.borderWidth = 2
         addNewRemindButton.layer.borderColor = UIColor.white.cgColor
-
         addNewRemindButton.layer.masksToBounds = false
-        
     }
+    
     func setupConstraints() {
         let remindStack = UIStackView(arrangedSubviews: [remindLabel,remindTF], axis: .horizontal, spacing: 24)
         addSubview(titleLabel)
@@ -62,7 +59,7 @@ class MainVCView: UIView {
         addSubview(datePicker)
         addSubview(addNewRemindButton)
         addSubview(table)
-         
+
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(64)
             make.centerX.equalTo(self)
@@ -76,13 +73,16 @@ class MainVCView: UIView {
             make.height.equalTo(36)
         }
         whenLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(self)
+            make.left.equalTo(24)
             make.top.equalTo(remindStack).inset(64)
         }
+
         datePicker.snp.makeConstraints { make in
-            make.top.equalTo(whenLabel).inset(36)
-            make.centerX.equalToSuperview()
+            make.top.equalTo(remindStack).inset(64)
+            make.left.equalTo(whenLabel.snp.right).inset(48)
+            make.width.equalTo(300)
         }
+        
         addNewRemindButton.snp.makeConstraints { make in
             make.centerX.equalTo(self)
             make.top.equalTo(datePicker.snp.bottom).inset(-24)
@@ -90,7 +90,7 @@ class MainVCView: UIView {
             make.height.equalTo(50)
         }
         table.snp.makeConstraints { make in
-            make.top.equalTo(addNewRemindButton.snp.bottom).inset(-24)
+            make.top.equalTo(addNewRemindButton.snp.bottom).inset(-64)
             make.left.equalTo(0)
             make.right.equalTo(0)
             make.bottom.equalTo(0)
